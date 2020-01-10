@@ -6,7 +6,7 @@ Iterative poking tool for Blender
 
 ### Installation
 
-Download the zip and install as an addon in Blender 2.80 or higher.
+[Download the zip](https://github.com/mantissa-/SuperPoke/archive/master.zip) and install as an addon in Blender 2.80 or higher.
 SuperPoke settings can be found in the side panel of the 3D viewport.
 
 # Overview
