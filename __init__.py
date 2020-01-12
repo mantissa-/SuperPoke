@@ -5,7 +5,7 @@
 bl_info = {
     "name": "SuperPoke",
     "author": "Midge \"Mantissa\" Sinnaeve",
-    "version": (0, 0, 5),
+    "version": (0, 0, 6),
     "blender": (2, 80, 0),
     "location": "View3D > Tool Shelf > SuperPoke Tab",
     "description": "Create superpoked geometry",
@@ -19,9 +19,6 @@ import bpy, bmesh
 from bpy.props import (IntProperty, FloatProperty, BoolProperty, PointerProperty)
 from bpy.types import (Panel, Operator, PropertyGroup)
 
-C = bpy.context
-D = bpy.data
-O = bpy.ops
 
 #------------#
 # PROPERTIES #
@@ -117,9 +114,9 @@ class SuperPokePanel(bpy.types.Panel):
         obj = bpy.context.object
         
         if obj != None and obj.type in ['MESH']:
-            spp = C.scene.sp_props
+            spp = bpy.context.scene.sp_props
             iter = spp.int_iterations
-            me = C.object.data
+            me = bpy.context.object.data
             fpc = ((len(me.polygons))*4)*(3**(iter-1))
             
         
@@ -150,7 +147,7 @@ class SuperPoke(bpy.types.Operator):
     
     def execute(self, context):
         
-        spp = C.scene.sp_props
+        spp = bpy.context.scene.sp_props
 
         off = spp.fl_poke_offset
         iter = spp.int_iterations
@@ -167,17 +164,17 @@ class SuperPoke(bpy.types.Operator):
             ori.hide_render = True
         
         if apply:
-            O.object.convert(target='MESH')
+            bpy.ops.object.convert(target='MESH')
             
-        me = C.object.data
+        me = bpy.context.object.data
             
         if keys:
-            O.object.shape_key_add(from_mix=True)
+            bpy.ops.object.shape_key_add(from_mix=True)
             
             for i in range(iter):        
-                O.object.shape_key_add(from_mix=True)
+                bpy.ops.object.shape_key_add(from_mix=True)
                 
-                O.object.mode_set(mode='EDIT')
+                bpy.ops.object.mode_set(mode='EDIT')
                 bm = bmesh.from_edit_mesh(me) 
                 
                 for f in bm.faces:
@@ -191,7 +188,7 @@ class SuperPoke(bpy.types.Operator):
                 else:
                     off *= mult
                 
-                O.object.mode_set(mode='OBJECT')            
+                bpy.ops.object.mode_set(mode='OBJECT')            
                 
         else:
             bm = bmesh.new()   # create an empty BMesh
